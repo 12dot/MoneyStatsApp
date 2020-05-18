@@ -9,6 +9,12 @@ target 'LoginWindow' do
 
 pod 'Alamofire'
 pod 'SwiftyJSON'
+use_frameworks!
+pod 'JWTDecode', '~> 2.4'
+pod 'SwiftKeychainWrapper'
+pod 'Charts'
+pod "TinyConstraints"
+
 
   target 'LoginWindowTests' do
     inherit! :search_paths

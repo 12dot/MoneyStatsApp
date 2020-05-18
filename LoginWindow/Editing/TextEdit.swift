@@ -12,6 +12,15 @@ import UIKit
 
 
 class Utilities{
+    
+    static func styleLittleFilledButton(_ button: UIButton){
+        button.backgroundColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1)
+        button.layer.cornerRadius = 15.0
+        button.tintColor = UIColor.white
+    }
+    
+
+    
     static func styleTextField(_ textField: UITextField){
     
         //create bottomLine
@@ -38,6 +47,7 @@ class Utilities{
         button.layer.borderColor = UIColor.black.cgColor
         button.layer.cornerRadius = 25.0
         button.tintColor = UIColor.black
+        
     }
     
     static func isPasswordvalid(_ password: String) -> Bool{
@@ -45,4 +55,12 @@ class Utilities{
         return passwordTest.evaluate(with: password)
     }
     
+}
+
+
+
+struct Product {
+    var productName : String
+    var productImage : UIImage
+    var productDesc : String
 }

@@ -9,16 +9,20 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import SwiftKeychainWrapper
+
+
 
 
 //loginWindow
-func jsonPost(login: String, password: String) -> String?{
+//func jsonPost(login: String, password: String, success: (_ response: AnyObject) -> Void) {
+func jsonPost(login: String, password: String,completion: @escaping () -> Void) {
+
     let params : [String:String] = [
         "username" : login,
         "password" : password
     ]
-        
-    var tokenToSave : String? = nil
+            
         AF.request("https://moneystats.herokuapp.com/passport/login/", method: .post, parameters: params, encoding: JSONEncoding.default)
             .responseJSON { response in
                 switch response.result{
@@ -26,18 +30,16 @@ func jsonPost(login: String, password: String) -> String?{
                 case .success(let value):
                         let json = JSON(value)
                         if let token = json["token"].string{
-                            print(token)
-                            tokenToSave = token
+                            //  print(token)
+                        KeychainWrapper.standard.set(token, forKey: "accessToken")
                     }
                     
                 case .failure(let error):
                     print(error)
                 }
- 
+             completion()
         }
-    
-    if tokenToSave != nil {return tokenToSave}
-    else {return nil}
+
 }
 
 

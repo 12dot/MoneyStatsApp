@@ -17,7 +17,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
-    
+    @IBOutlet weak var backArrow: UIButton!
     
     
     
@@ -35,6 +35,13 @@ class SignUpViewController: UIViewController {
         Utilities.styleTextField(firstNameText)
         Utilities.styleTextField(passwordText)
         Utilities.styleFilledButton(registerButton)
+    }
+    
+    @IBAction func backArrowTapped(_ sender: Any) {
+        //let viewController = storyboard?.instantiateViewController(identifier: "viewController") as? ViewController
+        //viewController?.modalPresentationStyle = .fullScreen
+        //self.navigationController?.pushViewController(viewController!, animated:  true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -72,11 +79,12 @@ class SignUpViewController: UIViewController {
             
             jsonRegPost(name: firstNameText.text!, login: loginText.text!, email: emailText.text!, password: passwordText.text!)
             
-       
+       /*
             let startViewController = storyboard?.instantiateViewController(identifier: "ViewController") as? ViewController
                            view.window?.rootViewController = startViewController
                            view.window?.makeKeyAndVisible()
-            
+         */
+            self.navigationController?.popViewController(animated: true)
         }
         
     }

@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import JWTDecode
+import SwiftyJSON
+import SwiftKeychainWrapper
 
 class LoginViewController: UIViewController {
 
@@ -14,7 +17,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
-    
+    @IBOutlet weak var backArrow: UIButton!
+    @IBOutlet weak var backArrowButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +34,7 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButtonTapped(_ sender: Any) {
         //validate fields
-            
+            let homeViewController = storyboard?.instantiateViewController(identifier: "homeViewController") as? HomeViewController
             let error = validateField()
             
             if error != nil {
@@ -38,14 +42,39 @@ class LoginViewController: UIViewController {
                 shake(view: errorLabel)
             }
             else{
+                self.showSpinner(onView: self.view)
+                jsonPost(login: loginText.text!, password: passwordText.text!) {
+                    KeychainWrapper.standard.set(self.loginText.text!, forKey: "login")
+                    let token: String? = KeychainWrapper.standard.string(forKey: "accessToken")
+                    let jwt = try! decode (jwt: token! )
+                    let claimEmail = jwt.claim(name: "name")
+                    if let name = claimEmail.string{
+                        KeychainWrapper.standard.set(name, forKey: "name")
+                        //print(name)
+                        //print(jwt.body)
+                    }
+                    self.removeSpinner()
+                    //switchRootViewController(rootViewController: homeViewController!, animated: true, completion: nil)
+                    self.navigationController?.pushViewController(homeViewController!, animated: true)
+            
+                    //UIApplication.shared.windows.first?.rootViewController = homeViewController
+                    //UIApplication.shared.windows.first?.makeKeyAndVisible()
+                }
                 
-                jsonPost(login : loginText.text!, password: passwordText.text!)
-                let homeViewController = storyboard?.instantiateViewController(identifier: "ViewControllerHome") as? HomeViewController
-                view.window?.rootViewController = homeViewController
-                view.window?.makeKeyAndVisible()
+               
             }
+        
     }
     
+    
+    
+    
+    @IBAction func backArrowTapped(_ sender: Any) {
+        //let viewController = storyboard?.instantiateViewController(identifier: "viewController") as? ViewController
+        //viewController?.modalPresentationStyle = .fullScreen
+        //self.navigationController?.pushViewController(viewController!, animated:  true)
+        self.navigationController?.popViewController(animated: true)
+    }
     
     func validateField() -> String? {
         
@@ -57,5 +86,6 @@ class LoginViewController: UIViewController {
         
         return nil
         }
+    
     
 }
