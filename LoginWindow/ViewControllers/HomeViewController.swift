@@ -9,14 +9,19 @@ import UIKit
 import SwiftKeychainWrapper
 import Charts
 import TinyConstraints
+import AudioToolbox
+
 
 
 var categories = ["Mall", "Car", "Education", "Sigarettes"]
-var moneySpent = [3456.0, 1234.0, 1900.0, 3200.0 ]
+var moneySpent = [3456.0, 1234.0, 1900.0, 3200.0]
 
 
 
-class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDataSource{
+
+
+class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate{
+ 
     
     
     
@@ -27,17 +32,29 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
     @IBOutlet weak var addItemButton: UIButton!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var budgetLabel: UILabel!
+    var picker = UIPickerView()
+    var categoryIdAdd = Int()
+    var alertController = UIAlertController()
+    var refreshControl = UIRefreshControl()
+
+
     
     override func viewDidLoad() {
+        //picker for category
+        picker.delegate = self
+        picker.dataSource = self
+        loadJsons()
         super.viewDidLoad()
-       
         //func for waiting for token
         
-       
-        
+        //pull to refresh
+
+
+      
         
         //setting up all
         setupWelcomeLbl()
+
         setUpTable()
         setUpChart()
         setUpElements()
@@ -53,10 +70,27 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
         Utilities.styleFilledButton(addItemButton)
     }
     
+    
+    func loadJsons(){
+        categoriesId = []
+        jsonCategories {
+        }
+        jsonGetExpensesHome(){
+            self.tableView.reloadData()
+        }
+    }
+    
+    
    // func setUpPlacement(){    }
+    
+    
+    
     
     //setup Butget label
     func setUpBudgetlbl(){
+        
+        budgetLabel.alpha = 0
+        /*
         let budget = 11300.0
         var budgetSpend = 0.0;
         //budgetLabel.layer.borderColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1).cgColor
@@ -84,7 +118,8 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
         
         //butgetLabel.text = "Your butget is \(String(butget)) rubles \rYou spent \(String(butgetSpend))"
     }
-
+*/
+    }
     
     //setting up label
     func setupWelcomeLbl(){
@@ -108,40 +143,47 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
     //setting up chart
     func setUpChart(){
         
-        pieChart.animate(xAxisDuration: 3.0)
-        pieChart.animate(yAxisDuration: 3.0)
-        pieChart.chartDescription?.enabled = false
-        //pieChart.drawHoleEnabled = false
-        //pieChart.rotationAngle = 0
-        //pieChart.rotationEnabled = false
-        pieChart.isUserInteractionEnabled = false
-        pieChart.legend.enabled = false
-    
-        
         var entries : [PieChartDataEntry] = Array()
         
-        
-        for i in 0..<categories.count{
-            entries.append(PieChartDataEntry(value: moneySpent[i] , label: categories[i]))
-        }
-    
-        
-        let dataSet = PieChartDataSet(entries: entries, label: "")
-        
-        var colors: [UIColor] = []
-        
-        for _ in 0..<moneySpent.count {
-            let red = Double(arc4random_uniform(256))
-            let green = Double(arc4random_uniform(256))
-            let blue = Double(arc4random_uniform(256))
+        chartStats.removeAll()
+        jsonChart{
+            for item in chartStats{
+                entries.append(PieChartDataEntry(value: item.total , label: item.name))
+            }
+            self.pieChart.animate(xAxisDuration: 3.0)
+            self.pieChart.animate(yAxisDuration: 3.0)
+            self.pieChart.chartDescription?.enabled = false
+                //pieChart.drawHoleEnabled = false
+                //pieChart.rotationAngle = 0
+                //pieChart.rotationEnabled = false
+            self.pieChart.isUserInteractionEnabled = false
+            self.pieChart.legend.enabled = false
+                
+              /*
+                for i in 0..<categories.count{
+                    entries.append(PieChartDataEntry(value: moneySpent[i] , label: categories[i]))
+                }
+            */
+                
+            let dataSet = PieChartDataSet(entries: entries, label: "")
             
-            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-            colors.append(color)
+            var colors: [UIColor] = []
+            
+            for _ in 0..<chartStats.count {
+                let red = Double(arc4random_uniform(256))
+                let green = Double(arc4random_uniform(256))
+                let blue = Double(arc4random_uniform(256))
+                
+                let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
+                colors.append(color)
+            }
+            
+            dataSet.colors = colors
+            
+            self.pieChart.data = PieChartData(dataSet: dataSet)
         }
         
-        dataSet.colors = colors
         
-        pieChart.data = PieChartData(dataSet: dataSet)
     }
     
 
@@ -149,14 +191,15 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
    //setting Up TableView
     func setUpTable(){
         
-        tableView.separatorColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1)
-        self.tableView.rowHeight = UITableView.automaticDimension
-        tableView.register(BandCell.self, forCellReuseIdentifier: "bandCellId")
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.allowsSelection = false
-        
+        expensesHome.removeAll()
             
+        self.tableView.separatorColor = mainPurple
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.register(BandCell.self, forCellReuseIdentifier: "bandCellId")
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.allowsSelection = false
+                    
     }
     
     
@@ -169,19 +212,31 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell  = tableView.dequeueReusableCell(withIdentifier: "bandCellId") as! BandCell
+        if(expensesHome.count <= indexPath.section){
+            cell.textField = "Clear"
+        }else{
+            
+            cell.category = categoriesId.first(where: {$0.id == expensesHome[indexPath.section].categoryId})?.name
+            cell.money = expensesHome[indexPath.section].price
+            cell.textField = expensesHome[indexPath.section].name
+        }
         
         cell.separatorInset = UIEdgeInsets.zero
         cell.layoutMargins = UIEdgeInsets.zero
         
-        cell.money = moneySpent[indexPath.section]
-        cell.textField = categories[indexPath.section]
+        //cell.money = expenses[indexPath.section].price
+        //cell.textField = expenses[indexPath.section].name
+        
+        //cell.money = moneySpent[indexPath.section]
+        //cell.textField = categories[indexPath.section]
         cell.layoutSubviews()
         
         cell.backgroundColor = UIColor.white
-        cell.layer.borderColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1).cgColor
+        cell.layer.borderColor = mainPurple.cgColor
         cell.layer.borderWidth = 5
-        cell.layer.cornerRadius = 8
+        cell.layer.cornerRadius = 22
         cell.clipsToBounds = true
         
         
@@ -215,10 +270,83 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
    
     
     @IBAction func moreButtonTapped(_ sender: Any) {
+        //historyTableViewController
+        let historyTableViewController = storyboard?.instantiateViewController(identifier: "historyTableViewController") as? HistoryTableViewController
+        //historyTableViewController?.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(historyTableViewController!, animated:  true)
+    }
+
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+         return 1
+     }
+     
+     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+         return categoriesId.count
+     }
+    
+     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+         return categoriesId[row].name
+     }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        categoryIdAdd = categoriesId[row].id
+        alertController.textFields?[2].text = categoriesId[row].name
+                    
     }
     
     
+    
+
     @IBAction func addNewItemButtonTapped(_ sender: Any) {
+        alertController = UIAlertController(title: "Create new item", message: nil, preferredStyle: .alert)
+        
+        self.alertController.addTextField { (textField) in
+            textField.placeholder = "New item name"
+         }
+        self.alertController.addTextField { (textField) in
+            textField.placeholder = "Money spent"
+            textField.keyboardType = UIKeyboardType.decimalPad
+        }
+        self.alertController.addTextField { (textField) in
+            //textField.tag = 12345
+            textField.placeholder = "Category"
+            textField.inputView = self.picker
+            //textField.text = self.pickerString
+            //textField.isUserInteractionEnabled = false
+            
+        }
+        let alertAction1 = UIAlertAction(title: "Cancel", style: .default){ (alert) in
+            return
+        }
+         let alertAction2 = UIAlertAction(title: "Create", style: .cancel){ (alert) in
+            let name = self.alertController.textFields![0].text
+            guard let price = Double(self.alertController.textFields![1].text!)else{
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                return
+            }
+            //let category = self.categoryIdAdd
+
+            if (name?.trimmingCharacters(in: .whitespaces).isEmpty )! || (self.categoryIdAdd==0) {
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                return
+             } else {
+                jsonPostExpence(name: name!, price: price, category: self.categoryIdAdd, viewController: self){
+                    self.setUpChart()
+                    self.setUpTable()
+                    jsonGetExpensesHome {
+                        self.tableView.reloadData()
+                    }
+                }
+                return
+             }
+         }
+         
+        self.alertController.addAction(alertAction1)
+        self.alertController.addAction(alertAction2)
+        present(self.alertController, animated: true, completion: nil)
+
     }
     
     
@@ -228,74 +356,7 @@ class HomeViewController: UIViewController, UITableViewDelegate,  UITableViewDat
         //switchRootViewController(rootViewController: viewController!, animated: true, completion: nil)
         //self.navigationController?.popViewController(animated: true)
         self.navigationController?.popToRootViewController(animated: true)
+        expensesHome.removeAll()
     }
-    
-    
-}
 
-
-
-
-//custom Cell
-class BandCell: UITableViewCell{
-    
-    var textField : String?
-    var money : Double?
-    
- 
-    var mainTextView : UITextField = {
-       var textView = UITextField()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.font = .boldSystemFont(ofSize: 15)
-        return textView
-    }()
-    
-    
-    var mainMoneyView : UITextField = {
-       var moneyView = UITextField()
-        moneyView.translatesAutoresizingMaskIntoConstraints = false
-        moneyView.font = .boldSystemFont(ofSize: 15)
-        return moneyView
-    }()
-    
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.addSubview(mainTextView)
-        self.addSubview(mainMoneyView)
-        
-        //mainTextView.leftToSuperview()
-        
-        //mainTextView.frame = CGRect(x:50, y:2, width: 100, height: 10)
-        //mainTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        //mainTextView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mainTextView.centerYToSuperview()
-        mainTextView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 10 ).isActive = true
-        
-
-        
-        //mainMoneyView.rightToSuperview()
-        mainMoneyView.centerYToSuperview()
-        mainMoneyView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        //mainTextView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 10 ).isActive = true
-        //mainTextView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor).isActive = true
-
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        if let textField = textField {
-            mainTextView.text = textField
-        }
-        if let money = money{
-           mainMoneyView.text = String(money) + " rub"
-        }
-}
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder: ) has not been implemented")
-    }
-    
-    
 }

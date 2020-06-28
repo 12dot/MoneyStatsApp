@@ -18,7 +18,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var backArrow: UIButton!
-    @IBOutlet weak var backArrowButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,20 +42,25 @@ class LoginViewController: UIViewController {
             }
             else{
                 self.showSpinner(onView: self.view)
-                jsonPost(login: loginText.text!, password: passwordText.text!) {
+                jsonPost(login: loginText.text!, password: passwordText.text!, viewController: self) {
                     KeychainWrapper.standard.set(self.loginText.text!, forKey: "login")
                     let token: String? = KeychainWrapper.standard.string(forKey: "accessToken")
                     let jwt = try! decode (jwt: token! )
                     let claimEmail = jwt.claim(name: "name")
+                    let claimUserId = jwt.claim(name: "user_id")
+                    if let userid = claimUserId.integer{
+                       KeychainWrapper.standard.set(userid, forKey: "userId")
+                       //print(name)
+                       //print(jwt.body)
+                    }
                     if let name = claimEmail.string{
                         KeychainWrapper.standard.set(name, forKey: "name")
                         //print(name)
                         //print(jwt.body)
                     }
-                    self.removeSpinner()
                     //switchRootViewController(rootViewController: homeViewController!, animated: true, completion: nil)
+                    self.removeSpinner()
                     self.navigationController?.pushViewController(homeViewController!, animated: true)
-            
                     //UIApplication.shared.windows.first?.rootViewController = homeViewController
                     //UIApplication.shared.windows.first?.makeKeyAndVisible()
                 }
@@ -64,6 +68,7 @@ class LoginViewController: UIViewController {
                
             }
         
+        //self.removeSpinner()
     }
     
     

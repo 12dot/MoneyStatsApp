@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     
     @IBAction func signupButtonTapped(_ sender: Any) {
         let signupViewController = storyboard?.instantiateViewController(identifier: "signupViewController") as? SignUpViewController
-        signupViewController?.modalPresentationStyle = .fullScreen
+        //signupViewController?.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(signupViewController!, animated:  true)
     }
     

@@ -14,7 +14,7 @@ import UIKit
 class Utilities{
     
     static func styleLittleFilledButton(_ button: UIButton){
-        button.backgroundColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1)
+        button.backgroundColor = mainPurple
         button.layer.cornerRadius = 15.0
         button.tintColor = UIColor.white
     }
@@ -27,7 +27,7 @@ class Utilities{
         let bottomLine = CALayer()
         
         bottomLine.frame = CGRect(x:0, y:textField.frame.height - 2, width:textField.frame.width, height:2)
-        bottomLine.backgroundColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1).cgColor
+        bottomLine.backgroundColor = mainPurple.cgColor
         
         //remove border
         textField.borderStyle = .none
@@ -37,7 +37,7 @@ class Utilities{
     }
     
     static func styleFilledButton(_ button : UIButton){
-        button.backgroundColor = UIColor.init(red: 204/255, green: 0/255, blue: 204/255, alpha: 1)
+        button.backgroundColor = mainPurple
         button.layer.cornerRadius = 25.0
         button.tintColor = UIColor.white
         }

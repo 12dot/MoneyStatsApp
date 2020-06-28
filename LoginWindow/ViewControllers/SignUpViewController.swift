@@ -35,6 +35,7 @@ class SignUpViewController: UIViewController {
         Utilities.styleTextField(firstNameText)
         Utilities.styleTextField(passwordText)
         Utilities.styleFilledButton(registerButton)
+        emailText.keyboardType = UIKeyboardType.emailAddress
     }
     
     @IBAction func backArrowTapped(_ sender: Any) {
@@ -50,7 +51,7 @@ class SignUpViewController: UIViewController {
         //check all fields are filled
         if firstNameText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
         emailText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
-            emailText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
+        emailText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" ||
         passwordText.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
         return "Please fill all the fields."
         }

@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.1.0)
+  - Alamofire (5.2.1)
   - Charts (3.5.0):
     - Charts/Core (= 3.5.0)
   - Charts/Core (3.5.0)
@@ -7,6 +7,7 @@ PODS:
   - SwiftKeychainWrapper (3.4.0)
   - SwiftyJSON (5.0.0)
   - TinyConstraints (4.0.1)
+  - UIScrollView-InfiniteScroll (1.1.0)
 
 DEPENDENCIES:
   - Alamofire
@@ -15,6 +16,7 @@ DEPENDENCIES:
   - SwiftKeychainWrapper
   - SwiftyJSON
   - TinyConstraints
+  - UIScrollView-InfiniteScroll (~> 1.1.0)
 
 SPEC REPOS:
   trunk:
@@ -24,15 +26,17 @@ SPEC REPOS:
     - SwiftKeychainWrapper
     - SwiftyJSON
     - TinyConstraints
+    - UIScrollView-InfiniteScroll
 
 SPEC CHECKSUMS:
-  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
+  Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   Charts: 40a08591df1f8ad5c223ddedfb1a06da92f24f7c
   JWTDecode: 4bd4da0cdf0f8154fd467fa48499f34ec057fb88
   SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
+  UIScrollView-InfiniteScroll: 3ef456bcbe759c19f510a383cff96e6647c98c98
 
-PODFILE CHECKSUM: 00ee8632751db2d10d9da4e1cd8fa93c4cfb79d9
+PODFILE CHECKSUM: b8cda9313fc97de0a72849f163e9373ae897c8fe
 
 COCOAPODS: 1.9.1

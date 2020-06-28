@@ -5,3 +5,4 @@ ${BUILT_PRODUCTS_DIR}/JWTDecode/JWTDecode.framework
 ${BUILT_PRODUCTS_DIR}/SwiftKeychainWrapper/SwiftKeychainWrapper.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework
 ${BUILT_PRODUCTS_DIR}/TinyConstraints/TinyConstraints.framework
+${BUILT_PRODUCTS_DIR}/UIScrollView-InfiniteScroll/UIScrollView_InfiniteScroll.framework

@@ -19,7 +19,9 @@
 		093D61252425533C00A41ED3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D61242425533C00A41ED3 /* LoginViewController.swift */; };
 		093D61272425534B00A41ED3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D61262425534B00A41ED3 /* HomeViewController.swift */; };
 		093D99CE24322C190087537F /* jsons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D99CD24322C190087537F /* jsons.swift */; };
-		09635AB42465E07B00360BEB /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09635AB32465E07B00360BEB /* Model.swift */; };
+		094747DD24747B78002031C8 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094747DB24747B78002031C8 /* LoadingCell.swift */; };
+		094747DE24747B78002031C8 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 094747DC24747B78002031C8 /* LoadingCell.xib */; };
+		09C0841E2473F773009FEB62 /* HistoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C0841D2473F773009FEB62 /* HistoryTableViewController.swift */; };
 		09CC6693244745130030D8C3 /* ClassesStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09CC6692244745130030D8C3 /* ClassesStructs.swift */; };
 		09D5BAD52428F9DF00037125 /* TextEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D5BAD42428F9DF00037125 /* TextEdit.swift */; };
 		B07DFE02C7A58368F4DA750A /* Pods_LoginWindowTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3297BF1C03ECD3102C28B056 /* Pods_LoginWindowTests.framework */; };
@@ -53,7 +55,9 @@
 		093D61242425533C00A41ED3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		093D61262425534B00A41ED3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		093D99CD24322C190087537F /* jsons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jsons.swift; sourceTree = "<group>"; };
-		09635AB32465E07B00360BEB /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		094747DB24747B78002031C8 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		094747DC24747B78002031C8 /* LoadingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
+		09C0841D2473F773009FEB62 /* HistoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewController.swift; sourceTree = "<group>"; };
 		09CC6692244745130030D8C3 /* ClassesStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesStructs.swift; sourceTree = "<group>"; };
 		09D5BAD42428F9DF00037125 /* TextEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEdit.swift; sourceTree = "<group>"; };
 		0A3C0030C72D9DA735343F1B /* Pods-LoginWindow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoginWindow.release.xcconfig"; path = "Target Support Files/Pods-LoginWindow/Pods-LoginWindow.release.xcconfig"; sourceTree = "<group>"; };
@@ -131,6 +135,7 @@
 		093D61282425535300A41ED3 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				09C0841D2473F773009FEB62 /* HistoryTableViewController.swift */,
 				093D61262425534B00A41ED3 /* HomeViewController.swift */,
 				093D61242425533C00A41ED3 /* LoginViewController.swift */,
 				093CF8CA24279C05003FDD7A /* SignUpViewController.swift */,
@@ -146,7 +151,8 @@
 				09CC6692244745130030D8C3 /* ClassesStructs.swift */,
 				093D99CD24322C190087537F /* jsons.swift */,
 				091E090C2429302E00832BE5 /* Animations.swift */,
-				09635AB32465E07B00360BEB /* Model.swift */,
+				094747DB24747B78002031C8 /* LoadingCell.swift */,
+				094747DC24747B78002031C8 /* LoadingCell.xib */,
 			);
 			path = Editing;
 			sourceTree = "<group>";
@@ -257,6 +263,7 @@
 			files = (
 				093D61072425528000A41ED3 /* LaunchScreen.storyboard in Resources */,
 				093D61042425528000A41ED3 /* Assets.xcassets in Resources */,
+				094747DE24747B78002031C8 /* LoadingCell.xib in Resources */,
 				093D61022425527F00A41ED3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -345,9 +352,10 @@
 				093D60FB2425527F00A41ED3 /* AppDelegate.swift in Sources */,
 				09CC6693244745130030D8C3 /* ClassesStructs.swift in Sources */,
 				093D60FD2425527F00A41ED3 /* SceneDelegate.swift in Sources */,
+				094747DD24747B78002031C8 /* LoadingCell.swift in Sources */,
 				093D99CE24322C190087537F /* jsons.swift in Sources */,
 				093D61252425533C00A41ED3 /* LoginViewController.swift in Sources */,
-				09635AB42465E07B00360BEB /* Model.swift in Sources */,
+				09C0841E2473F773009FEB62 /* HistoryTableViewController.swift in Sources */,
 				091E090D2429302E00832BE5 /* Animations.swift in Sources */,
 				093D61272425534B00A41ED3 /* HomeViewController.swift in Sources */,
 			);
@@ -511,6 +519,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VF4SKZRA4Z;
 				INFOPLIST_FILE = LoginWindow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -529,6 +538,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VF4SKZRA4Z;
 				INFOPLIST_FILE = LoginWindow/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

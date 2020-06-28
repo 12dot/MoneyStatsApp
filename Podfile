@@ -14,6 +14,7 @@ pod 'JWTDecode', '~> 2.4'
 pod 'SwiftKeychainWrapper'
 pod 'Charts'
 pod "TinyConstraints"
+pod 'UIScrollView-InfiniteScroll', '~> 1.1.0'
 
 
   target 'LoginWindowTests' do
